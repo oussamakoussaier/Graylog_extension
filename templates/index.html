@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Graylog Anomaly Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header Section -->
+        <header class="dashboard-header">
+            <h1>Graylog Security Monitor</h1>
+            <div class="sla-tracker">
+                <div class="sla-bar" style="width: 92%">92% SLA Compliance</div>
+            </div>
+        </header>
+
+        <!-- Controls Section -->
+        <section class="controls">
+            <div class="graylog-query-builder">
+                <input type="text" id="graylog-query" placeholder="source:firewall AND severity:high">
+                <button id="apply-query">Search</button>
+                <button id="save-query">Save Query</button>
+            </div>
+            
+            <div class="severity-filter">
+                <button class="filter-btn active" data-severity="all">All</button>
+                <button class="filter-btn" data-severity="high">High</button>
+                <button class="filter-btn" data-severity="medium">Medium</button>
+                <button class="filter-btn" data-severity="low">Low</button>
+                <button class="filter-btn" data-severity="threat">Threat Intel</button>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <div class="content-grid">
+            <!-- Anomaly List -->
+            <section class="anomaly-section">
+                <h2>Detected Anomalies <span class="badge" id="anomaly-count">0</span></h2>
+                <div class="anomaly-container" id="anomaly-container">
+                    <!-- Anomalies will be inserted here by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Visualization Panel -->
+            <section class="visualization-section">
+                <div class="tab-container">
+                    <button class="tab-btn active" data-tab="network">Network Graph</button>
+                    <button class="tab-btn" data-tab="timeline">Timeline</button>
+                    <button class="tab-btn" data-tab="patterns">Common Patterns</button>
+                </div>
+                
+                <div class="tab-content active" id="network-tab">
+                    <div id="ip-relations-graph"></div>
+                </div>
+                
+                <div class="tab-content" id="timeline-tab">
+                    <div class="timeline-view" id="timeline-view"></div>
+                </div>
+                
+                <div class="tab-content" id="patterns-tab">
+                    <ul class="pattern-list" id="pattern-list"></ul>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Log Viewer Modal -->
+    <div class="modal" id="log-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Original Graylog Message</h3>
+            <pre id="log-content"></pre>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
